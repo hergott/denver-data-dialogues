@@ -229,6 +229,6 @@ results/
 
 ---
 
-## License
+## All Data Simulated by LLM
 
 This project is provided as a demonstration of structured-output LLM techniques. All patient data is simulated and fictitious.
