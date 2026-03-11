@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beyond the Chatbot: Building LLMs into Business Systems — Integration Showcase</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f172a;
+      --bg-card: #1e293b;
+      --bg-code: #0f172a;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --text-heading: #f1f5f9;
+      --border: #334155;
+      --shadow: rgba(0, 0, 0, 0.4);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Sticky Nav ── */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 1.5rem;
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .nav-brand {
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-right: 1.2rem;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+    .nav-link:hover {
+      background: #334155;
+      color: var(--text-heading);
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      padding: 3.5rem 1.5rem 2.5rem;
+      background: linear-gradient(180deg, #1e293b 0%, var(--bg) 100%);
+    }
+    .header h1 {
+      font-size: 2rem;
+      color: var(--text-heading);
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .header .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+    }
+    .header .meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    .header .meta span {
+      margin: 0 0.5rem;
+    }
+    .header .intro {
+      max-width: 760px;
+      margin: 0 auto;
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── Card Grid ── */
+    .grid {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 24px var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px var(--shadow), 0 0 0 1px var(--accent, var(--border));
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .card-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: var(--accent, #6366f1);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .card-header h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      line-height: 1.3;
+    }
+
+    /* ── Badges ── */
+    .badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-tech {
+      background: #33415522;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .description {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Mapped Fields ── */
+    .mapped-fields {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .mapped-fields h3 {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+    }
+    .field-values {
+      font-size: 0.85rem;
+      line-height: 1.8;
+    }
+    .field-values strong {
+      color: var(--text-heading);
+    }
+    .judgment-value {
+      display: inline-block;
+      background: #dc262622;
+      color: #fca5a5;
+      padding: 0.1rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* ── Code Block ── */
+    .code-section h3 {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    pre {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-size: 0.8rem;
+      line-height: 1.55;
+    }
+    code {
+      font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "SF Mono", Consolas, monospace;
+      color: var(--text);
+    }
+
+    /* Syntax colours */
+    .py-keyword { color: #c084fc; font-weight: 600; }
+    .py-string { color: #86efac; }
+    .py-comment { color: #64748b; font-style: italic; }
+    .py-fstring { color: #fbbf24; }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <span class="nav-brand">Integration Showcase</span>
+        <a class="nav-link" href="#uc-1">1. Hospital EHR</a>
+        <a class="nav-link" href="#uc-2">2. CDC Syndromic Surveillance</a>
+        <a class="nav-link" href="#uc-3">3. Bed Management Dashboard</a>
+        <a class="nav-link" href="#uc-4">4. Clinical Research Data Lake</a>
+        <a class="nav-link" href="#uc-5">5. Insurance Pre-Authorization</a>
+        <a class="nav-link" href="#uc-6">6. Medical School Teaching Database</a>
+        <a class="nav-link" href="#uc-7">7. Emergency Department Event Stream</a>
+        <a class="nav-link" href="#uc-8">8. State Health Department Analytics</a>
+  </nav>
+
+  <header class="header">
+    <h1>Beyond the Chatbot: Building LLMs into Business Systems</h1>
+    <p class="subtitle">Demonstrating how structured LLM outputs feed real-world technology endpoints</p>
+    <p class="meta">
+      <span>Model: <strong>openai/gpt-oss-120b</strong></span>
+      <span>|</span>
+      <span>Generated: 2026-03-10 19:17:29 UTC</span>
+      <span>|</span>
+      <span>Triage Routing: <strong>SURGERY</strong></span>
+    </p>
+    <p class="intro">
+      This showcase demonstrates eight concrete integration patterns where a validated,
+      schema-constrained <code>Triage</code> object — produced by the ER Intake Triage
+      structured-output LLM pipeline — feeds directly into real-world technology
+      endpoints used by healthcare, government, academic, and insurance organizations.
+      Each card below shows the target system, the specific Pydantic fields consumed,
+      live values extracted from the current analysis, and realistic integration code.
+    </p>
+  </header>
+
+  <main class="grid">
+
+      <section class="card" id="uc-1" style="--accent: #0d9488">
+        <div class="card-header">
+          <span class="card-num">1</span>
+          <h2>Hospital EHR — FHIR Observation Resources</h2>
+        </div>
+        <div class="badges">
+          <span class="badge badge-org" style="background: #0d948822; color: #0d9488; border: 1px solid #0d948855">Healthcare</span>
+          <span class="badge badge-tech">🏥 REST / FHIR R4 API</span>
+        </div>
+        <p class="description">Push each extracted symptom as a FHIR Observation resource into the hospital&#x27;s Electronic Health Records system, creating a structured clinical record from unstructured intake transcripts.</p>
+        <div class="mapped-fields">
+          <h3>Mapped Fields — Live Values</h3>
+          <div class="field-values"><strong>SymptomRead.clinical</strong>: "New holosystolic murmur radiating to axilla consistent with severe mitral regurgitation, persistent and worsening since early February", "Pulmonary edema with pink frothy sputum, present at rest and increasing, indicating acute fluid overload", "Severe crushing chest pressure, constant, escalating to 8-9/10, present at rest and with activity", "Hypotension with systolic BP dropping to 96 mmHg, progressive from baseline 128/78, indicating circulatory compromise", "Tachycardia with resting heart rate up to 124 bpm, persistent and irregular, worsening over days" … and 9 more<br><strong>SymptomRead.severity</strong>: range [2, 5], mean 3.6</div>
+        </div>
+        <div class="code-section">
+          <h3>Sample Integration Code</h3>
+          <pre><code><span class="py-keyword">import</span> requests, json
+
+FHIR_BASE = <span <span class="py-keyword">class</span>="py-string">&quot;https://ehr.hospital.org/fhir/R4&quot;</span>
+
+<span class="py-keyword">for</span> calc <span class="py-keyword">in</span> triage.calculations:
+    <span class="py-keyword">for</span> cluster <span class="py-keyword">in</span> calc.clusters:
+        <span class="py-keyword">for</span> symptom <span class="py-keyword">in</span> cluster.symptoms:
+            observation = <span class="py-fstring">{
+                <span <span class="py-keyword">class</span>="py-string">&quot;resourceType&quot;</span>: <span <span class="py-keyword">class</span>="py-string">&quot;Observation&quot;</span>,
+                <span <span class="py-keyword">class</span>="py-string">&quot;status&quot;</span>: <span <span class="py-keyword">class</span>="py-string">&quot;final&quot;</span>,
+                <span <span class="py-keyword">class</span>="py-string">&quot;category&quot;</span>: [{
+                    <span <span class="py-keyword">class</span>="py-string">&quot;coding&quot;</span>: [{
+                        <span <span class="py-keyword">class</span>="py-string">&quot;system&quot;</span>: <span <span class="py-keyword">class</span>="py-string">&quot;http://terminology.hl7.org/CodeSystem/observation-category&quot;</span>,
+                        <span <span class="py-keyword">class</span>="py-string">&quot;code&quot;</span>: <span <span class="py-keyword">class</span>="py-string">&quot;exam&quot;</span>,
+                        <span <span class="py-keyword">class</span>="py-string">&quot;display&quot;</span>: <span <span class="py-keyword">class</span>="py-string">&quot;Exam&quot;</span>
+                    }</span>]
+                }],
+                <span <span class="py-keyword">class</span>="py-string">&quot;code&quot;</span>: <span class="py-fstring">{
+                    <span <span class="py-keyword">class</span>="py-string">&quot;text&quot;</span>: symptom.clinical
+                }</span>,
+                <span <span class="py-keyword">class</span>="py-string">&quot;valueInteger&quot;</span>: symptom.severity,
+                <span <span class="py-keyword">class</span>="py-string">&quot;interpretation&quot;</span>: [<span class="py-fstring">{
+                    <span <span class="py-keyword">class</span>="py-string">&quot;text&quot;</span>: f<span <span class="py-keyword">class</span>="py-string">&quot;Severity {symptom.severity}</span>/5&quot;</span>
+                }]
+            }
+            resp = requests.post(
+                f<span <span class="py-keyword">class</span>="py-string">&quot;<span class="py-fstring">{FHIR_BASE}</span>/Observation&quot;</span>,
+                json=observation,
+                headers=<span class="py-fstring">{<span <span class="py-keyword">class</span>="py-string">&quot;Content-Type&quot;</span>: <span <span class="py-keyword">class</span>="py-string">&quot;application/fhir+json&quot;</span>}</span>,
+                timeout=30,
+            )
+            resp.raise_for_status()</code></pre>
+        </div>
+      </section>
+
+      <section class="card" id="uc-2" style="--accent: #6366f1">
+        <div class="card-header">
+          <span class="card-num">2</span>
+          <h2>CDC Syndromic Surveillance — MQTT Stream</h2>
+        </div>
+        <div class="badges">
+          <span class="badge badge-org" style="background: #6366f122; color: #6366f1; border: 1px solid #6366f155">Government</span>
+          <span class="badge badge-tech">📡 MQTT Message Broker</span>
+        </div>
+        <p class="description">Stream real-time acute cluster alerts to a public health syndromic surveillance system for early outbreak detection and situational awareness.</p>
+        <div class="mapped-fields">
+          <h3>Mapped Fields — Live Values</h3>
+          <div class="field-values"><strong>SymptomCluster.acute</strong>: 3 acute / 3 total clusters<br><strong>SymptomCluster.symptoms (count)</strong>: [5, 5, 4] (total 14)</div>
+        </div>
+        <div class="code-section">
+          <h3>Sample Integration Code</h3>
+          <pre><code><span class="py-keyword">import</span> paho.mqtt.client <span class="py-keyword">as</span> mqtt
+<span class="py-keyword">import</span> json
+
+client = mqtt.Client(client_id=<span <span class="py-keyword">class</span>="py-string">&quot;er-triage-pipeline&quot;</span>)
+client.tls_set()  <span <span class="py-keyword">class</span>="py-comment"># Enable TLS <span class="py-keyword">for</span> secure transport</span>
+client.connect(<span <span class="py-keyword">class</span>="py-string">&quot;mqtt.cdc.gov&quot;</span>, port=8883)
+
+<span class="py-keyword">for</span> calc <span class="py-keyword">in</span> triage.calculations:
+    <span class="py-keyword">for</span> cluster <span class="py-keyword">in</span> calc.clusters:
+        <span class="py-keyword">if</span> cluster.acute:
+            payload = json.dumps(<span class="py-fstring">{
+                <span <span class="py-keyword">class</span>="py-string">&quot;alert_type&quot;</span>: <span <span class="py-keyword">class</span>="py-string">&quot;acute_cluster&quot;</span>,
+                <span <span class="py-keyword">class</span>="py-string">&quot;symptom_count&quot;</span>: len(cluster.symptoms),
+                <span <span class="py-keyword">class</span>="py-string">&quot;symptoms&quot;</span>: [s.clinical <span class="py-keyword">for</span> s <span class="py-keyword">in</span> cluster.symptoms],
+                <span <span class="py-keyword">class</span>="py-string">&quot;acute&quot;</span>: cluster.acute,
+                <span <span class="py-keyword">class</span>="py-string">&quot;timestamp&quot;</span>: datetime.now(timezone.utc).isoformat(),
+            }</span>)
+            client.publish(
+                <span <span class="py-keyword">class</span>="py-string">&quot;cdc/syndromic/acute_alerts&quot;</span>,
+                payload=payload,
+                qos=1,
+            )
+
+client.disconnect()</code></pre>
+        </div>
+      </section>
+
+      <section class="card" id="uc-3" style="--accent: #f59e0b">
+        <div class="card-header">
+          <span class="card-num">3</span>
+          <h2>Bed Management Dashboard — Redis Cache</h2>
+        </div>
+        <div class="badges">
+          <span class="badge badge-org" style="background: #f59e0b22; color: #f59e0b; border: 1px solid #f59e0b55">Hospital Operations</span>
+          <span class="badge badge-tech">⚡ Redis In-Memory Cache</span>
+        </div>
+        <p class="description">Instantly update a real-time bed-management dashboard with the triage routing decision so that charge nurses and bed coordinators can allocate resources before the patient arrives at the unit.</p>
+        <div class="mapped-fields">
+          <h3>Mapped Fields — Live Values</h3>
+          <div class="field-values"><strong>Triage.judgment</strong>: <span class="judgment-value">surgery</span></div>
+        </div>
+        <div class="code-section">
+          <h3>Sample Integration Code</h3>
+          <pre><code><span class="py-keyword">import</span> redis, json
+
+r = redis.Redis(host=<span <span class="py-keyword">class</span>="py-string">&quot;redis.hospital.local&quot;</span>, port=6379, db=0)
+
+patient_id = <span <span class="py-keyword">class</span>="py-string">&quot;patient-20260310-001&quot;</span>
+routing = <span class="py-fstring">{
+    <span <span class="py-keyword">class</span>="py-string">&quot;judgment&quot;</span>: triage.judgment,
+    <span <span class="py-keyword">class</span>="py-string">&quot;timestamp&quot;</span>: datetime.now(timezone.utc).isoformat(),
+    <span <span class="py-keyword">class</span>="py-string">&quot;priority&quot;</span>: <span <span class="py-keyword">class</span>="py-string">&quot;STAT&quot;</span> <span class="py-keyword">if</span> triage.judgment <span class="py-keyword">in</span> (<span <span class="py-keyword">class</span>="py-string">&quot;surgery&quot;</span>, <span <span class="py-keyword">class</span>="py-string">&quot;ICU&quot;</span>) <span class="py-keyword">else</span> <span <span class="py-keyword">class</span>="py-string">&quot;routine&quot;</span>,
+}</span>
+
+<span <span class="py-keyword">class</span>="py-comment"># Cache routing decision <span class="py-keyword">with</span> 2-hour TTL</span>
+r.set(
+    f<span <span class="py-keyword">class</span>="py-string">&quot;triage:routing:<span class="py-fstring">{patient_id}</span>&quot;</span>,
+    json.dumps(routing),
+    ex=7200,
+)
+
+<span <span class="py-keyword">class</span>="py-comment"># Publish to real-time channel <span class="py-keyword">for</span> dashboard subscribers</span>
+r.publish(<span <span class="py-keyword">class</span>="py-string">&quot;triage:routing&quot;</span>, json.dumps(<span class="py-fstring">{
+    <span <span class="py-keyword">class</span>="py-string">&quot;patient_id&quot;</span>: patient_id,
+    **routing,
+}</span>))</code></pre>
+        </div>
+      </section>
+
+      <section class="card" id="uc-4" style="--accent: #8b5cf6">
+        <div class="card-header">
+          <span class="card-num">4</span>
+          <h2>Clinical Research Data Lake — Parquet/S3</h2>
+        </div>
+        <div class="badges">
+          <span class="badge badge-org" style="background: #8b5cf622; color: #8b5cf6; border: 1px solid #8b5cf655">Clinical Research</span>
+          <span class="badge badge-tech">💾 Apache Parquet / AWS S3 Data Lake</span>
+        </div>
+        <p class="description">Write flattened risk calculation records as columnar Parquet files to a research data lake for retrospective cohort analysis and outcomes research.</p>
+        <div class="mapped-fields">
+          <h3>Mapped Fields — Live Values</h3>
+          <div class="field-values"><strong>RiskCalc.risk</strong>: 0.96, 0.88, 0.80<br><strong>RiskCalc[0].clusters</strong>: 1 clusters (1 acute)<br><strong>RiskCalc[1].clusters</strong>: 1 clusters (1 acute)<br><strong>RiskCalc[2].clusters</strong>: 1 clusters (1 acute)</div>
+        </div>
+        <div class="code-section">
+          <h3>Sample Integration Code</h3>
+          <pre><code><span class="py-keyword">import</span> pyarrow <span class="py-keyword">as</span> pa
+<span class="py-keyword">import</span> pyarrow.parquet <span class="py-keyword">as</span> pq
+
+rows = []
+<span class="py-keyword">for</span> i, calc <span class="py-keyword">in</span> enumerate(triage.calculations):
+    acute_count = sum(1 <span class="py-keyword">for</span> c <span class="py-keyword">in</span> calc.clusters <span class="py-keyword">if</span> c.acute)
+    rows.append(<span class="py-fstring">{
+        <span <span class="py-keyword">class</span>="py-string">&quot;calc_index&quot;</span>: i,
+        <span <span class="py-keyword">class</span>="py-string">&quot;risk_score&quot;</span>: calc.risk,
+        <span <span class="py-keyword">class</span>="py-string">&quot;cluster_count&quot;</span>: len(calc.clusters),
+        <span <span class="py-keyword">class</span>="py-string">&quot;acute_cluster_count&quot;</span>: acute_count,
+        <span <span class="py-keyword">class</span>="py-string">&quot;judgment&quot;</span>: triage.judgment,
+        <span <span class="py-keyword">class</span>="py-string">&quot;timestamp&quot;</span>: datetime.now(timezone.utc).isoformat(),
+    }</span>)
+
+table = pa.Table.from_pylist(rows)
+pq.write_to_dataset(
+    table,
+    root_path=<span <span class="py-keyword">class</span>="py-string">&quot;s3://research-datalake/triage/risk_calcs&quot;</span>,
+    partition_cols=[<span <span class="py-keyword">class</span>="py-string">&quot;judgment&quot;</span>],
+)</code></pre>
+        </div>
+      </section>
+
+      <section class="card" id="uc-5" style="--accent: #ef4444">
+        <div class="card-header">
+          <span class="card-num">5</span>
+          <h2>Insurance Pre-Authorization — SOAP/XML</h2>
+        </div>
+        <div class="badges">
+          <span class="badge badge-org" style="background: #ef444422; color: #ef4444; border: 1px solid #ef444455">Insurance</span>
+          <span class="badge badge-tech">📨 SOAP / XML Web Service</span>
+        </div>
+        <p class="description">Submit the highest risk score and triage routing to a payer&#x27;s pre-authorization service for automated approval of emergent procedures, reducing administrative delays in critical cases.</p>
+        <div class="mapped-fields">
+          <h3>Mapped Fields — Live Values</h3>
+          <div class="field-values"><strong>RiskCalc.risk</strong>: 0.96, 0.88, 0.80<br><strong>Triage.judgment</strong>: <span class="judgment-value">surgery</span></div>
+        </div>
+        <div class="code-section">
+          <h3>Sample Integration Code</h3>
+          <pre><code><span class="py-keyword">from</span> zeep <span class="py-keyword">import</span> Client
+
+wsdl = <span <span class="py-keyword">class</span>="py-string">&quot;https://payer.example.com/preauth?wsdl&quot;</span>
+soap_client = Client(wsdl)
+
+max_risk = max(calc.risk <span class="py-keyword">for</span> calc <span class="py-keyword">in</span> triage.calculations)
+response = soap_client.service.SubmitPreAuthorization(
+    PatientId=<span <span class="py-keyword">class</span>="py-string">&quot;patient-20260310-001&quot;</span>,
+    RiskScore=max_risk,
+    TriageRouting=triage.judgment,
+    Urgency=<span <span class="py-keyword">class</span>="py-string">&quot;emergent&quot;</span> <span class="py-keyword">if</span> max_risk &gt;= 0.8 <span class="py-keyword">else</span> <span <span class="py-keyword">class</span>="py-string">&quot;urgent&quot;</span>,
+    RequestTimestamp=datetime.now(timezone.utc).isoformat(),
+)
+
+<span class="py-keyword">if</span> response.Approved:
+    auth_number = response.AuthorizationNumber
+    <span class="py-keyword">print</span>(f<span <span class="py-keyword">class</span>="py-string">&quot;Pre-auth approved: <span class="py-fstring">{auth_number}</span>&quot;</span>)</code></pre>
+        </div>
+      </section>
+
+      <section class="card" id="uc-6" style="--accent: #d97706">
+        <div class="card-header">
+          <span class="card-num">6</span>
+          <h2>Medical School Teaching Database — PostgreSQL</h2>
+        </div>
+        <div class="badges">
+          <span class="badge badge-org" style="background: #d9770622; color: #d97706; border: 1px solid #d9770655">Academic</span>
+          <span class="badge badge-tech">🗄️ PostgreSQL Relational Database</span>
+        </div>
+        <p class="description">Insert deduplicated symptom extractions into a normalized teaching database that medical students query to study symptom-to-diagnosis reasoning patterns.</p>
+        <div class="mapped-fields">
+          <h3>Mapped Fields — Live Values</h3>
+          <div class="field-values"><strong>SymptomRead.clinical</strong>: "New holosystolic murmur radiating to axilla consistent with severe mitral regurgitation, persistent and worsening since early February", "Pulmonary edema with pink frothy sputum, present at rest and increasing, indicating acute fluid overload", "Severe crushing chest pressure, constant, escalating to 8-9/10, present at rest and with activity", "Hypotension with systolic BP dropping to 96 mmHg, progressive from baseline 128/78, indicating circulatory compromise", "Tachycardia with resting heart rate up to 124 bpm, persistent and irregular, worsening over days" … and 9 more<br><strong>SymptomRead.severity</strong>: range [2, 5], mean 3.6<br><strong>SymptomCluster.acute</strong>: 3 acute / 3 total clusters</div>
+        </div>
+        <div class="code-section">
+          <h3>Sample Integration Code</h3>
+          <pre><code><span class="py-keyword">import</span> psycopg2
+
+conn = psycopg2.connect(
+    host=<span <span class="py-keyword">class</span>="py-string">&quot;db.medschool.edu&quot;</span>, dbname=<span <span class="py-keyword">class</span>="py-string">&quot;teaching_cases&quot;</span>,
+    user=<span <span class="py-keyword">class</span>="py-string">&quot;etl_service&quot;</span>, password=<span <span class="py-keyword">class</span>="py-string">&quot;***&quot;</span>,
+)
+cur = conn.cursor()
+
+<span class="py-keyword">try</span>:
+    <span class="py-keyword">for</span> calc <span class="py-keyword">in</span> triage.calculations:
+        <span class="py-keyword">for</span> cluster <span class="py-keyword">in</span> calc.clusters:
+            cur.execute(
+                <span <span class="py-keyword">class</span>="py-string">&quot;INSERT INTO clusters (acute, symptom_count, created_at) &quot;</span>
+                <span <span class="py-keyword">class</span>="py-string">&quot;VALUES (%s, %s, NOW()) RETURNING id&quot;</span>,
+                (cluster.acute, len(cluster.symptoms)),
+            )
+            cluster_id = cur.fetchone()[0]
+
+            <span class="py-keyword">for</span> symptom <span class="py-keyword">in</span> cluster.symptoms:
+                cur.execute(
+                    <span <span class="py-keyword">class</span>="py-string">&quot;INSERT INTO symptoms (cluster_id, clinical, severity) &quot;</span>
+                    <span <span class="py-keyword">class</span>="py-string">&quot;VALUES (%s, %s, %s)&quot;</span>,
+                    (cluster_id, symptom.clinical, symptom.severity),
+                )
+    conn.commit()
+<span class="py-keyword">finally</span>:
+    cur.close()
+    conn.close()</code></pre>
+        </div>
+      </section>
+
+      <section class="card" id="uc-7" style="--accent: #dc2626">
+        <div class="card-header">
+          <span class="card-num">7</span>
+          <h2>Emergency Department Event Stream — Kafka</h2>
+        </div>
+        <div class="badges">
+          <span class="badge badge-org" style="background: #dc262622; color: #dc2626; border: 1px solid #dc262655">Emergency Services</span>
+          <span class="badge badge-tech">🔀 Apache Kafka Event Stream</span>
+        </div>
+        <p class="description">Publish triage routing events with risk metadata to a Kafka topic so that downstream systems (alerting, analytics, staffing) can react in real time to incoming patient acuity.</p>
+        <div class="mapped-fields">
+          <h3>Mapped Fields — Live Values</h3>
+          <div class="field-values"><strong>Triage.judgment</strong>: <span class="judgment-value">surgery</span><br><strong>RiskCalc.risk (max)</strong>: 0.96</div>
+        </div>
+        <div class="code-section">
+          <h3>Sample Integration Code</h3>
+          <pre><code><span class="py-keyword">from</span> confluent_kafka <span class="py-keyword">import</span> Producer
+<span class="py-keyword">import</span> json, socket
+
+producer = Producer(<span class="py-fstring">{
+    <span <span class="py-keyword">class</span>="py-string">&quot;bootstrap.servers&quot;</span>: <span <span class="py-keyword">class</span>="py-string">&quot;kafka.hospital.local:9092&quot;</span>,
+    <span <span class="py-keyword">class</span>="py-string">&quot;client.id&quot;</span>: socket.gethostname(),
+}</span>)
+
+max_risk = max(calc.risk <span class="py-keyword">for</span> calc <span class="py-keyword">in</span> triage.calculations)
+event = json.dumps(<span class="py-fstring">{
+    <span <span class="py-keyword">class</span>="py-string">&quot;event_type&quot;</span>: <span <span class="py-keyword">class</span>="py-string">&quot;triage_routing&quot;</span>,
+    <span <span class="py-keyword">class</span>="py-string">&quot;judgment&quot;</span>: triage.judgment,
+    <span <span class="py-keyword">class</span>="py-string">&quot;max_risk_score&quot;</span>: max_risk,
+    <span <span class="py-keyword">class</span>="py-string">&quot;risk_dimensions&quot;</span>: len(triage.calculations),
+    <span <span class="py-keyword">class</span>="py-string">&quot;timestamp&quot;</span>: datetime.now(timezone.utc).isoformat(),
+}</span>)
+
+producer.produce(
+    topic=<span <span class="py-keyword">class</span>="py-string">&quot;ed.triage.events&quot;</span>,
+    key=<span <span class="py-keyword">class</span>="py-string">&quot;patient-20260310-001&quot;</span>,
+    value=event,
+)
+producer.flush(timeout=10)</code></pre>
+        </div>
+      </section>
+
+      <section class="card" id="uc-8" style="--accent: #059669">
+        <div class="card-header">
+          <span class="card-num">8</span>
+          <h2>State Health Department Analytics — GraphQL</h2>
+        </div>
+        <div class="badges">
+          <span class="badge badge-org" style="background: #05966922; color: #059669; border: 1px solid #05966955">Public Health</span>
+          <span class="badge badge-tech">🌐 GraphQL API</span>
+        </div>
+        <p class="description">Report aggregated cluster-level data to a state health department&#x27;s analytics platform for population health monitoring, resource planning, and epidemiological trend detection.</p>
+        <div class="mapped-fields">
+          <h3>Mapped Fields — Live Values</h3>
+          <div class="field-values"><strong>SymptomCluster.symptoms</strong>: "New holosystolic murmur radiating to axilla consistent with severe mitral regurgitation, persistent and worsening since early February", "Pulmonary edema with pink frothy sputum, present at rest and increasing, indicating acute fluid overload", "Severe crushing chest pressure, constant, escalating to 8-9/10, present at rest and with activity", "Hypotension with systolic BP dropping to 96 mmHg, progressive from baseline 128/78, indicating circulatory compromise", "Tachycardia with resting heart rate up to 124 bpm, persistent and irregular, worsening over days", "Dyspnea with orthopnea and paroxysmal nocturnal dyspnea, worsening to inability to lie flat, requiring multiple pillows" … and 8 more<br><strong>SymptomCluster.acute</strong>: 3 acute / 3 total clusters<br><strong>RiskCalc.risk</strong>: 0.96, 0.88, 0.80</div>
+        </div>
+        <div class="code-section">
+          <h3>Sample Integration Code</h3>
+          <pre><code><span class="py-keyword">from</span> gql <span class="py-keyword">import</span> gql, Client
+<span class="py-keyword">from</span> gql.transport.requests <span class="py-keyword">import</span> RequestsHTTPTransport
+
+transport = RequestsHTTPTransport(
+    url=<span <span class="py-keyword">class</span>="py-string">&quot;https://analytics.health.state.gov/graphql&quot;</span>,
+    headers=<span class="py-fstring">{<span <span class="py-keyword">class</span>="py-string">&quot;Authorization&quot;</span>: &quot;Bearer &lt;token&gt;<span <span class="py-keyword">class</span>="py-string">&quot;}</span>,
+)
+gql_client = Client(transport=transport, fetch_schema_from_transport=<span class="py-keyword">True</span>)
+
+mutation = gql(<span <span class="py-keyword">class</span>="py-string">&quot;</span><span <span class="py-keyword">class</span>="py-string">&quot;&quot;</span>
+    mutation CreateTriageReport($input: TriageReportInput!) <span class="py-fstring">{
+        createTriageReport(input: $input) {
+            id
+            status
+        }</span>
+    }
+<span <span class="py-keyword">class</span>="py-string">&quot;&quot;</span><span <span class="py-keyword">class</span>="py-string">&quot;</span>)
+
+clusters_data = []
+<span class="py-keyword">for</span> calc <span class="py-keyword">in</span> triage.calculations:
+    <span class="py-keyword">for</span> cluster <span class="py-keyword">in</span> calc.clusters:
+        clusters_data.append(<span class="py-fstring">{
+            &quot;</span>symptoms<span <span class="py-keyword">class</span>="py-string">&quot;: [s.clinical <span class="py-keyword">for</span> s <span class="py-keyword">in</span> cluster.symptoms],
+            &quot;</span>acute<span <span class="py-keyword">class</span>="py-string">&quot;: cluster.acute,
+            &quot;</span>symptomCount<span <span class="py-keyword">class</span>="py-string">&quot;: len(cluster.symptoms),
+        }</span>)
+
+result = gql_client.execute(mutation, variable_values=<span class="py-fstring">{
+    &quot;</span>input<span <span class="py-keyword">class</span>="py-string">&quot;: {
+        &quot;</span>clusters<span <span class="py-keyword">class</span>="py-string">&quot;: clusters_data,
+        &quot;</span>riskScores<span <span class="py-keyword">class</span>="py-string">&quot;: [c.risk <span class="py-keyword">for</span> c <span class="py-keyword">in</span> triage.calculations],
+        &quot;</span>judgment&quot;: triage.judgment,
+    }</span>
+})</code></pre>
+        </div>
+      </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>
+      <strong>Educational Demonstration</strong> — This showcase is part of the
+      "Beyond the Chatbot: Building LLMs into Business Systems" presentation.
+      All integration endpoints shown are simulated for illustration purposes.
+      The structured data values displayed above are real outputs from the
+      ER Intake Triage pipeline using the <strong>openai/gpt-oss-120b</strong> model.
+    </p>
+  </footer>
+
+</body>
+</html>

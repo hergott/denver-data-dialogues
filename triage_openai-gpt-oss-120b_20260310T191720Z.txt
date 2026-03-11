@@ -1,0 +1,301 @@
+==============================================================================
+             ER INTAKE TRIAGE ANALYSIS — STRUCTURED OUTPUT REPORT             
+==============================================================================
+
+  Generated:  2026-03-10 19:17:29 UTC
+  Model:      openai/gpt-oss-120b
+  Patient:    58 y/o male, 24 intake transcripts (Jan 14 – Mar 8, 2026)
+  Judgment:   SURGERY
+
+==============================================================================
+
+ANALYSIS SUMMARY
+------------------------------------------------------------------------------
+  Risk dimensions analyzed:    3
+  Symptom clusters identified: 3 (3 acute)
+  Individual symptoms extracted:14
+  Highest risk score:          0.96
+  Triage routing:              surgery
+
+
+==============================================================================
+                    LEVEL 1: INDIVIDUAL SYMPTOM EXTRACTION                    
+==============================================================================
+
+  Every symptom the LLM extracted from the intake transcripts, translated into
+  clinical terminology and scored for severity. These are the atomic building
+  blocks of the analysis.
+
+    Symptom 1:
+      New holosystolic murmur radiating to axilla consistent with severe
+      mitral regurgitation, persistent and worsening since early February
+      Severity: [█████████░] +4
+
+    Symptom 2:
+      Pulmonary edema with pink frothy sputum, present at rest and increasing,
+      indicating acute fluid overload
+      Severity: [██████████] +5
+
+    Symptom 3:
+      Severe crushing chest pressure, constant, escalating to 8-9/10, present
+      at rest and with activity
+      Severity: [██████████] +5
+
+    Symptom 4:
+      Hypotension with systolic BP dropping to 96 mmHg, progressive from
+      baseline 128/78, indicating circulatory compromise
+      Severity: [████████░░] +3
+
+    Symptom 5:
+      Tachycardia with resting heart rate up to 124 bpm, persistent and
+      irregular, worsening over days
+      Severity: [████████░░] +3
+
+    Symptom 6:
+      Dyspnea with orthopnea and paroxysmal nocturnal dyspnea, worsening to
+      inability to lie flat, requiring multiple pillows
+      Severity: [██████████] +5
+
+    Symptom 7:
+      Bilateral lower-extremity pitting edema up to mid-calf, daily,
+      increasingly severe, causing difficulty with shoes
+      Severity: [█████████░] +4
+
+    Symptom 8:
+      Severe fatigue, unable to work, requiring frequent rest, progressive
+      Severity: [███████░░░] +2
+
+    Symptom 9:
+      Anorexia with weight loss, minimal oral intake, loose clothing,
+      progressive
+      Severity: [███████░░░] +2
+
+    Symptom 10:
+      Respiratory distress with accessory muscle use and shallow rapid
+      breaths, worsening, oxygen saturation low despite supplemental O2
+      Severity: [█████████░] +4
+
+    Symptom 11:
+      Palpitations with irregular rapid heartbeat, episodes lasting minutes,
+      increasingly frequent
+      Severity: [████████░░] +3
+
+    Symptom 12:
+      Pre-syncope with orthostatic dizziness, episodes of near-fainting,
+      worsening
+      Severity: [████████░░] +3
+
+    Symptom 13:
+      Peripheral cyanosis of lips and fingertips, dusky bluish color,
+      persistent
+      Severity: [█████████░] +4
+
+    Symptom 14:
+      Profuse diaphoresis, night sweats and clammy skin, ongoing
+      Severity: [████████░░] +3
+
+  Total symptoms extracted: 14
+
+
+==============================================================================
+                          LEVEL 2: SYMPTOM CLUSTERS                           
+==============================================================================
+
+  Symptoms grouped by shared pathophysiological mechanism or organ system.
+  Each cluster is flagged as ACUTE (requires immediate intervention) or
+  Stable. The same symptom may appear in multiple clusters when clinically
+  relevant to more than one process.
+
+  Cluster 1  [⚠  ACUTE — IMMEDIATE INTERVENTION REQUIRED]
+  ────────────────────────────────────────────────────────────
+    Symptom 1:
+      New holosystolic murmur radiating to axilla consistent with severe
+      mitral regurgitation, persistent and worsening since early February
+      Severity: [█████████░] +4
+
+    Symptom 2:
+      Pulmonary edema with pink frothy sputum, present at rest and increasing,
+      indicating acute fluid overload
+      Severity: [██████████] +5
+
+    Symptom 3:
+      Severe crushing chest pressure, constant, escalating to 8-9/10, present
+      at rest and with activity
+      Severity: [██████████] +5
+
+    Symptom 4:
+      Hypotension with systolic BP dropping to 96 mmHg, progressive from
+      baseline 128/78, indicating circulatory compromise
+      Severity: [████████░░] +3
+
+    Symptom 5:
+      Tachycardia with resting heart rate up to 124 bpm, persistent and
+      irregular, worsening over days
+      Severity: [████████░░] +3
+
+  Cluster 2  [⚠  ACUTE — IMMEDIATE INTERVENTION REQUIRED]
+  ────────────────────────────────────────────────────────────
+    Symptom 1:
+      Dyspnea with orthopnea and paroxysmal nocturnal dyspnea, worsening to
+      inability to lie flat, requiring multiple pillows
+      Severity: [██████████] +5
+
+    Symptom 2:
+      Bilateral lower-extremity pitting edema up to mid-calf, daily,
+      increasingly severe, causing difficulty with shoes
+      Severity: [█████████░] +4
+
+    Symptom 3:
+      Severe fatigue, unable to work, requiring frequent rest, progressive
+      Severity: [███████░░░] +2
+
+    Symptom 4:
+      Anorexia with weight loss, minimal oral intake, loose clothing,
+      progressive
+      Severity: [███████░░░] +2
+
+    Symptom 5:
+      Respiratory distress with accessory muscle use and shallow rapid
+      breaths, worsening, oxygen saturation low despite supplemental O2
+      Severity: [█████████░] +4
+
+  Cluster 3  [⚠  ACUTE — IMMEDIATE INTERVENTION REQUIRED]
+  ────────────────────────────────────────────────────────────
+    Symptom 1:
+      Palpitations with irregular rapid heartbeat, episodes lasting minutes,
+      increasingly frequent
+      Severity: [████████░░] +3
+
+    Symptom 2:
+      Pre-syncope with orthostatic dizziness, episodes of near-fainting,
+      worsening
+      Severity: [████████░░] +3
+
+    Symptom 3:
+      Peripheral cyanosis of lips and fingertips, dusky bluish color,
+      persistent
+      Severity: [█████████░] +4
+
+    Symptom 4:
+      Profuse diaphoresis, night sweats and clammy skin, ongoing
+      Severity: [████████░░] +3
+
+  Total clusters: 3(3 acute, 0 stable)
+
+
+==============================================================================
+                          LEVEL 3: RISK CALCULATIONS                          
+==============================================================================
+
+  Each risk dimension scores the overall danger to the patient across one or
+  more symptom clusters, weighting both the plausibility of a serious
+  diagnosis and the severity of its consequences. Clusters and their symptoms
+  are shown again here in full so the reasoning chain is visible.
+
+
+------------------------------------------------------------------------------
+RISK DIMENSION 1
+Composite Risk Score: [███████████████████░] 0.96
+------------------------------------------------------------------------------
+
+  Cluster 1  [⚠  ACUTE — IMMEDIATE INTERVENTION REQUIRED]
+  ────────────────────────────────────────────────────────────
+    Symptom 1:
+      New holosystolic murmur radiating to axilla consistent with severe
+      mitral regurgitation, persistent and worsening since early February
+      Severity: [█████████░] +4
+
+    Symptom 2:
+      Pulmonary edema with pink frothy sputum, present at rest and increasing,
+      indicating acute fluid overload
+      Severity: [██████████] +5
+
+    Symptom 3:
+      Severe crushing chest pressure, constant, escalating to 8-9/10, present
+      at rest and with activity
+      Severity: [██████████] +5
+
+    Symptom 4:
+      Hypotension with systolic BP dropping to 96 mmHg, progressive from
+      baseline 128/78, indicating circulatory compromise
+      Severity: [████████░░] +3
+
+    Symptom 5:
+      Tachycardia with resting heart rate up to 124 bpm, persistent and
+      irregular, worsening over days
+      Severity: [████████░░] +3
+
+------------------------------------------------------------------------------
+RISK DIMENSION 2
+Composite Risk Score: [██████████████████░░] 0.88
+------------------------------------------------------------------------------
+
+  Cluster 1  [⚠  ACUTE — IMMEDIATE INTERVENTION REQUIRED]
+  ────────────────────────────────────────────────────────────
+    Symptom 1:
+      Dyspnea with orthopnea and paroxysmal nocturnal dyspnea, worsening to
+      inability to lie flat, requiring multiple pillows
+      Severity: [██████████] +5
+
+    Symptom 2:
+      Bilateral lower-extremity pitting edema up to mid-calf, daily,
+      increasingly severe, causing difficulty with shoes
+      Severity: [█████████░] +4
+
+    Symptom 3:
+      Severe fatigue, unable to work, requiring frequent rest, progressive
+      Severity: [███████░░░] +2
+
+    Symptom 4:
+      Anorexia with weight loss, minimal oral intake, loose clothing,
+      progressive
+      Severity: [███████░░░] +2
+
+    Symptom 5:
+      Respiratory distress with accessory muscle use and shallow rapid
+      breaths, worsening, oxygen saturation low despite supplemental O2
+      Severity: [█████████░] +4
+
+------------------------------------------------------------------------------
+RISK DIMENSION 3
+Composite Risk Score: [████████████████░░░░] 0.80
+------------------------------------------------------------------------------
+
+  Cluster 1  [⚠  ACUTE — IMMEDIATE INTERVENTION REQUIRED]
+  ────────────────────────────────────────────────────────────
+    Symptom 1:
+      Palpitations with irregular rapid heartbeat, episodes lasting minutes,
+      increasingly frequent
+      Severity: [████████░░] +3
+
+    Symptom 2:
+      Pre-syncope with orthostatic dizziness, episodes of near-fainting,
+      worsening
+      Severity: [████████░░] +3
+
+    Symptom 3:
+      Peripheral cyanosis of lips and fingertips, dusky bluish color,
+      persistent
+      Severity: [█████████░] +4
+
+    Symptom 4:
+      Profuse diaphoresis, night sweats and clammy skin, ongoing
+      Severity: [████████░░] +3
+
+
+==============================================================================
+                           LEVEL 4: TRIAGE DECISION                           
+==============================================================================
+
+  Routing Decision:  >>> SURGERY <<<
+
+  This routing decision is derived from the complete chain of clinical
+  reasoning: individual symptom extraction (Level 1) from all intake
+  transcripts, clustering by pathophysiological mechanism (Level 2), multi-
+  dimensional risk calculation (Level 3), and synthesis into the single most
+  appropriate triage destination (Level 4).
+
+
+==============================================================================
+                                END OF REPORT                                 
+==============================================================================

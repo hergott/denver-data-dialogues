@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ER Intake Triage Report</title>
+  <style>
+:root {
+  --bg: #0f1117;
+  --surface: #181b24;
+  --surface-2: #1e2230;
+  --border: #2a2e3b;
+  --text: #e0e2ea;
+  --text-muted: #8b8fa3;
+  --accent: #6c8aff;
+  --green: #34d399;
+  --amber: #fbbf24;
+  --orange: #f97316;
+  --red: #ef4444;
+  --radius: 10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  padding: 2rem 1rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+h1, h2, h3 { font-weight: 600; letter-spacing: -0.01em; }
+h1 { font-size: 1.6rem; color: #fff; }
+h2 { font-size: 1.15rem; color: var(--text); }
+h3 { font-size: 0.95rem; color: var(--text-muted); }
+header {
+  text-align: center;
+  padding: 2.5rem 1.5rem 2rem;
+  background: linear-gradient(135deg, #1a1e2e 0%, #0f1117 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+}
+header p { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem; }
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  text-align: left;
+}
+.meta-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+.meta-item .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+.meta-item .value { font-size: 1rem; font-weight: 600; color: #fff; margin-top: 0.15rem; }
+
+/* Summary cards */
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  text-align: center;
+}
+.stat-card .num { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+.stat-card .desc { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.25rem; }
+
+/* Risk sections */
+.risk-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+.risk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+.risk-score-block {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+.risk-bar-track {
+  width: 140px;
+  height: 8px;
+  background: var(--surface-2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.risk-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.risk-value { font-size: 1.05rem; font-weight: 700; min-width: 2.5rem; text-align: right; }
+
+/* Clusters */
+.cluster {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 0.75rem;
+}
+.cluster-acute { border-left: 3px solid var(--red); }
+.cluster-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.cluster-count { font-size: 0.75rem; color: var(--text-muted); }
+.badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+.badge-acute { background: rgba(239,68,68,0.15); color: var(--red); }
+.badge-stable { background: rgba(52,211,153,0.12); color: var(--green); }
+
+/* Symptoms */
+.symptom {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.symptom:last-child { border-bottom: none; }
+.symptom-header { display: flex; gap: 0.6rem; align-items: baseline; margin-bottom: 0.35rem; }
+.symptom-index {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 1.4rem;
+  text-align: center;
+  background: rgba(108,138,255,0.1);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+.symptom-clinical { font-size: 0.88rem; color: var(--text); }
+.severity-row { display: flex; align-items: center; gap: 0.6rem; margin-left: 2rem; }
+.severity-label { font-size: 0.7rem; color: var(--text-muted); min-width: 4rem; }
+.bar-track {
+  flex: 1;
+  max-width: 120px;
+  height: 6px;
+  background: var(--surface);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+.severity-value { font-size: 0.8rem; font-weight: 700; min-width: 2rem; text-align: right; }
+
+/* Colour coding */
+.severity-critical, .risk-critical { color: var(--red); }
+.severity-critical.bar-fill, .risk-critical.risk-bar-fill { background: var(--red); }
+.severity-high, .risk-high { color: var(--orange); }
+.severity-high.bar-fill, .risk-high.risk-bar-fill { background: var(--orange); }
+.severity-moderate, .risk-moderate { color: var(--amber); }
+.severity-moderate.bar-fill, .risk-moderate.risk-bar-fill { background: var(--amber); }
+.severity-low, .risk-low { color: var(--green); }
+.severity-low.bar-fill, .risk-low.risk-bar-fill { background: var(--green); }
+
+/* Judgment */
+.judgment-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin: 1.5rem 0;
+}
+.judgment-card h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.75rem; }
+.judgment-routing {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.judgment-surgery { background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(239,68,68,0.02)); }
+.judgment-surgery .judgment-routing { color: var(--red); }
+.judgment-icu { background: linear-gradient(135deg, rgba(249,115,22,0.08), rgba(249,115,22,0.02)); }
+.judgment-icu .judgment-routing { color: var(--orange); }
+.judgment-observation { background: linear-gradient(135deg, rgba(251,191,36,0.08), rgba(251,191,36,0.02)); }
+.judgment-observation .judgment-routing { color: var(--amber); }
+.judgment-discharge { background: linear-gradient(135deg, rgba(52,211,153,0.08), rgba(52,211,153,0.02)); }
+.judgment-discharge .judgment-routing { color: var(--green); }
+.judgment-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+/* Warnings */
+.warnings {
+  background: rgba(251,191,36,0.06);
+  border: 1px solid rgba(251,191,36,0.2);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.warnings h2 { color: var(--amber); font-size: 0.9rem; margin-bottom: 0.5rem; }
+.warnings ul { list-style: none; padding: 0; }
+.warnings li { font-size: 0.85rem; color: var(--text-muted); padding: 0.2rem 0; }
+.warnings li::before { content: "\26A0\FE0F "; }
+
+footer {
+  text-align: center;
+  padding: 1.5rem 0 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  margin-top: 1.5rem;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ER Intake Triage Analysis</h1>
+    <p>Structured-Output LLM Pipeline Report</p>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="label">Generated</div>
+        <div class="value">2026-03-10 19:17:29 UTC</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Model</div>
+        <div class="value">openai/gpt-oss-120b</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Patient</div>
+        <div class="value">58 y/o male &mdash; 24 transcripts</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Transcript Period</div>
+        <div class="value">Jan 14 &ndash; Mar 8, 2026</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary">
+    <div class="stat-card">
+      <div class="num">3</div>
+      <div class="desc">Risk Dimensions</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">3</div>
+      <div class="desc">Symptom Clusters</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">14</div>
+      <div class="desc">Symptoms Extracted</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">3</div>
+      <div class="desc">Acute Clusters</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">0.96</div>
+      <div class="desc">Highest Risk</div>
+    </div>
+  </div>
+
+
+  <div class="level-section">
+    <div class="level-header">
+      <span class="level-badge">Level 1</span>
+      <h2>Individual Symptom Extraction</h2>
+    </div>
+    <p class="level-description">
+      Every symptom the LLM extracted from the intake transcripts, translated
+      into clinical terminology and scored for severity. These are the atomic
+      building blocks of the analysis.
+    </p>
+    <div class="symptom-list-section">
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">1</span>
+            <span class="symptom-clinical">New holosystolic murmur radiating to axilla consistent with severe mitral regurgitation, persistent and worsening since early February</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:90%"></div>
+            </div>
+            <span class="severity-value severity-critical">+4</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">2</span>
+            <span class="symptom-clinical">Pulmonary edema with pink frothy sputum, present at rest and increasing, indicating acute fluid overload</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:100%"></div>
+            </div>
+            <span class="severity-value severity-critical">+5</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">3</span>
+            <span class="symptom-clinical">Severe crushing chest pressure, constant, escalating to 8-9/10, present at rest and with activity</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:100%"></div>
+            </div>
+            <span class="severity-value severity-critical">+5</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">4</span>
+            <span class="symptom-clinical">Hypotension with systolic BP dropping to 96 mmHg, progressive from baseline 128/78, indicating circulatory compromise</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">5</span>
+            <span class="symptom-clinical">Tachycardia with resting heart rate up to 124 bpm, persistent and irregular, worsening over days</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">6</span>
+            <span class="symptom-clinical">Dyspnea with orthopnea and paroxysmal nocturnal dyspnea, worsening to inability to lie flat, requiring multiple pillows</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:100%"></div>
+            </div>
+            <span class="severity-value severity-critical">+5</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">7</span>
+            <span class="symptom-clinical">Bilateral lower-extremity pitting edema up to mid-calf, daily, increasingly severe, causing difficulty with shoes</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:90%"></div>
+            </div>
+            <span class="severity-value severity-critical">+4</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">8</span>
+            <span class="symptom-clinical">Severe fatigue, unable to work, requiring frequent rest, progressive</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:70%"></div>
+            </div>
+            <span class="severity-value severity-high">+2</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">9</span>
+            <span class="symptom-clinical">Anorexia with weight loss, minimal oral intake, loose clothing, progressive</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:70%"></div>
+            </div>
+            <span class="severity-value severity-high">+2</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">10</span>
+            <span class="symptom-clinical">Respiratory distress with accessory muscle use and shallow rapid breaths, worsening, oxygen saturation low despite supplemental O2</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:90%"></div>
+            </div>
+            <span class="severity-value severity-critical">+4</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">11</span>
+            <span class="symptom-clinical">Palpitations with irregular rapid heartbeat, episodes lasting minutes, increasingly frequent</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">12</span>
+            <span class="symptom-clinical">Pre-syncope with orthostatic dizziness, episodes of near-fainting, worsening</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">13</span>
+            <span class="symptom-clinical">Peripheral cyanosis of lips and fingertips, dusky bluish color, persistent</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:90%"></div>
+            </div>
+            <span class="severity-value severity-critical">+4</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">14</span>
+            <span class="symptom-clinical">Profuse diaphoresis, night sweats and clammy skin, ongoing</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+    </div>
+    <div class="level-count">Total symptoms extracted: 14</div>
+  </div>
+
+
+  <div class="level-section">
+    <div class="level-header">
+      <span class="level-badge">Level 2</span>
+      <h2>Symptom Clusters</h2>
+    </div>
+    <p class="level-description">
+      Symptoms grouped by shared pathophysiological mechanism or organ system.
+      Each cluster is flagged as ACUTE (requires immediate intervention) or
+      Stable. The same symptom may appear in multiple clusters when clinically
+      relevant to more than one process.
+    </p>
+    <div class="cluster-list-section">
+
+      <div class="cluster cluster-acute">
+        <div class="cluster-header">
+          <h3>Cluster 1 <span class="badge badge-acute">ACUTE</span></h3>
+          <span class="cluster-count">5 symptoms</span>
+        </div>
+        
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">1</span>
+            <span class="symptom-clinical">New holosystolic murmur radiating to axilla consistent with severe mitral regurgitation, persistent and worsening since early February</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:90%"></div>
+            </div>
+            <span class="severity-value severity-critical">+4</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">2</span>
+            <span class="symptom-clinical">Pulmonary edema with pink frothy sputum, present at rest and increasing, indicating acute fluid overload</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:100%"></div>
+            </div>
+            <span class="severity-value severity-critical">+5</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">3</span>
+            <span class="symptom-clinical">Severe crushing chest pressure, constant, escalating to 8-9/10, present at rest and with activity</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:100%"></div>
+            </div>
+            <span class="severity-value severity-critical">+5</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">4</span>
+            <span class="symptom-clinical">Hypotension with systolic BP dropping to 96 mmHg, progressive from baseline 128/78, indicating circulatory compromise</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">5</span>
+            <span class="symptom-clinical">Tachycardia with resting heart rate up to 124 bpm, persistent and irregular, worsening over days</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cluster cluster-acute">
+        <div class="cluster-header">
+          <h3>Cluster 2 <span class="badge badge-acute">ACUTE</span></h3>
+          <span class="cluster-count">5 symptoms</span>
+        </div>
+        
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">1</span>
+            <span class="symptom-clinical">Dyspnea with orthopnea and paroxysmal nocturnal dyspnea, worsening to inability to lie flat, requiring multiple pillows</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:100%"></div>
+            </div>
+            <span class="severity-value severity-critical">+5</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">2</span>
+            <span class="symptom-clinical">Bilateral lower-extremity pitting edema up to mid-calf, daily, increasingly severe, causing difficulty with shoes</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:90%"></div>
+            </div>
+            <span class="severity-value severity-critical">+4</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">3</span>
+            <span class="symptom-clinical">Severe fatigue, unable to work, requiring frequent rest, progressive</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:70%"></div>
+            </div>
+            <span class="severity-value severity-high">+2</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">4</span>
+            <span class="symptom-clinical">Anorexia with weight loss, minimal oral intake, loose clothing, progressive</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:70%"></div>
+            </div>
+            <span class="severity-value severity-high">+2</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">5</span>
+            <span class="symptom-clinical">Respiratory distress with accessory muscle use and shallow rapid breaths, worsening, oxygen saturation low despite supplemental O2</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:90%"></div>
+            </div>
+            <span class="severity-value severity-critical">+4</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cluster cluster-acute">
+        <div class="cluster-header">
+          <h3>Cluster 3 <span class="badge badge-acute">ACUTE</span></h3>
+          <span class="cluster-count">4 symptoms</span>
+        </div>
+        
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">1</span>
+            <span class="symptom-clinical">Palpitations with irregular rapid heartbeat, episodes lasting minutes, increasingly frequent</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">2</span>
+            <span class="symptom-clinical">Pre-syncope with orthostatic dizziness, episodes of near-fainting, worsening</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">3</span>
+            <span class="symptom-clinical">Peripheral cyanosis of lips and fingertips, dusky bluish color, persistent</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:90%"></div>
+            </div>
+            <span class="severity-value severity-critical">+4</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">4</span>
+            <span class="symptom-clinical">Profuse diaphoresis, night sweats and clammy skin, ongoing</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="level-count">
+      Total clusters: 3
+      (3 acute, 0 stable)
+    </div>
+  </div>
+
+
+  <div class="level-section">
+    <div class="level-header">
+      <span class="level-badge">Level 3</span>
+      <h2>Risk Calculations</h2>
+    </div>
+    <p class="level-description">
+      Each risk dimension scores the overall danger to the patient across one
+      or more symptom clusters, weighting both the plausibility of a serious
+      diagnosis and the severity of its consequences. Clusters and their
+      symptoms are shown again here in full so the reasoning chain is visible.
+    </p>
+
+    <section class="risk-section">
+      <div class="risk-header">
+        <h2>Risk Dimension 1</h2>
+        <div class="risk-score-block">
+          <div class="risk-bar-track">
+            <div class="risk-bar-fill risk-critical" style="width:96%"></div>
+          </div>
+          <span class="risk-value risk-critical">0.96</span>
+        </div>
+      </div>
+      
+      <div class="cluster cluster-acute">
+        <div class="cluster-header">
+          <h3>Cluster 1 <span class="badge badge-acute">ACUTE</span></h3>
+          <span class="cluster-count">5 symptoms</span>
+        </div>
+        
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">1</span>
+            <span class="symptom-clinical">New holosystolic murmur radiating to axilla consistent with severe mitral regurgitation, persistent and worsening since early February</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:90%"></div>
+            </div>
+            <span class="severity-value severity-critical">+4</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">2</span>
+            <span class="symptom-clinical">Pulmonary edema with pink frothy sputum, present at rest and increasing, indicating acute fluid overload</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:100%"></div>
+            </div>
+            <span class="severity-value severity-critical">+5</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">3</span>
+            <span class="symptom-clinical">Severe crushing chest pressure, constant, escalating to 8-9/10, present at rest and with activity</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:100%"></div>
+            </div>
+            <span class="severity-value severity-critical">+5</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">4</span>
+            <span class="symptom-clinical">Hypotension with systolic BP dropping to 96 mmHg, progressive from baseline 128/78, indicating circulatory compromise</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">5</span>
+            <span class="symptom-clinical">Tachycardia with resting heart rate up to 124 bpm, persistent and irregular, worsening over days</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="risk-section">
+      <div class="risk-header">
+        <h2>Risk Dimension 2</h2>
+        <div class="risk-score-block">
+          <div class="risk-bar-track">
+            <div class="risk-bar-fill risk-critical" style="width:88%"></div>
+          </div>
+          <span class="risk-value risk-critical">0.88</span>
+        </div>
+      </div>
+      
+      <div class="cluster cluster-acute">
+        <div class="cluster-header">
+          <h3>Cluster 1 <span class="badge badge-acute">ACUTE</span></h3>
+          <span class="cluster-count">5 symptoms</span>
+        </div>
+        
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">1</span>
+            <span class="symptom-clinical">Dyspnea with orthopnea and paroxysmal nocturnal dyspnea, worsening to inability to lie flat, requiring multiple pillows</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:100%"></div>
+            </div>
+            <span class="severity-value severity-critical">+5</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">2</span>
+            <span class="symptom-clinical">Bilateral lower-extremity pitting edema up to mid-calf, daily, increasingly severe, causing difficulty with shoes</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:90%"></div>
+            </div>
+            <span class="severity-value severity-critical">+4</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">3</span>
+            <span class="symptom-clinical">Severe fatigue, unable to work, requiring frequent rest, progressive</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:70%"></div>
+            </div>
+            <span class="severity-value severity-high">+2</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">4</span>
+            <span class="symptom-clinical">Anorexia with weight loss, minimal oral intake, loose clothing, progressive</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:70%"></div>
+            </div>
+            <span class="severity-value severity-high">+2</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">5</span>
+            <span class="symptom-clinical">Respiratory distress with accessory muscle use and shallow rapid breaths, worsening, oxygen saturation low despite supplemental O2</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:90%"></div>
+            </div>
+            <span class="severity-value severity-critical">+4</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="risk-section">
+      <div class="risk-header">
+        <h2>Risk Dimension 3</h2>
+        <div class="risk-score-block">
+          <div class="risk-bar-track">
+            <div class="risk-bar-fill risk-critical" style="width:80%"></div>
+          </div>
+          <span class="risk-value risk-critical">0.80</span>
+        </div>
+      </div>
+      
+      <div class="cluster cluster-acute">
+        <div class="cluster-header">
+          <h3>Cluster 1 <span class="badge badge-acute">ACUTE</span></h3>
+          <span class="cluster-count">4 symptoms</span>
+        </div>
+        
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">1</span>
+            <span class="symptom-clinical">Palpitations with irregular rapid heartbeat, episodes lasting minutes, increasingly frequent</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">2</span>
+            <span class="symptom-clinical">Pre-syncope with orthostatic dizziness, episodes of near-fainting, worsening</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">3</span>
+            <span class="symptom-clinical">Peripheral cyanosis of lips and fingertips, dusky bluish color, persistent</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-critical" style="width:90%"></div>
+            </div>
+            <span class="severity-value severity-critical">+4</span>
+          </div>
+        </div>
+
+        <div class="symptom">
+          <div class="symptom-header">
+            <span class="symptom-index">4</span>
+            <span class="symptom-clinical">Profuse diaphoresis, night sweats and clammy skin, ongoing</span>
+          </div>
+          <div class="severity-row">
+            <span class="severity-label">Severity</span>
+            <div class="bar-track">
+              <div class="bar-fill severity-high" style="width:80%"></div>
+            </div>
+            <span class="severity-value severity-high">+3</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="level-section">
+    <div class="level-header">
+      <span class="level-badge">Level 4</span>
+      <h2>Triage Decision</h2>
+    </div>
+    <div class="judgment-card judgment-surgery">
+      <h2>Final Triage Judgment</h2>
+      <div class="judgment-routing">surgery</div>
+      <p class="judgment-note">
+        Derived from the complete chain of clinical reasoning: individual symptom
+        extraction (Level 1) from all intake transcripts, clustering by
+        pathophysiological mechanism (Level 2), multi-dimensional risk
+        calculation (Level 3), and synthesis into the single most appropriate
+        triage destination (Level 4).
+      </p>
+    </div>
+  </div>
+
+  <footer>ER Intake Triage &mdash; Structured-Output LLM Pipeline</footer>
+</body>
+</html>

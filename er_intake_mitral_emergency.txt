@@ -1,0 +1,369 @@
+################################################################################
+# SIMULATED ER / CLINIC INTAKE DATA — STRUCTURED OUTPUTS CASE STUDY
+# Patient: Single male patient, multiple visits, Jan 12 – Mar 4, 2026
+# Final visit date: March 4, 2026
+# Intended surgical outcome: Emergency Mitral Valve Repair (open-heart)
+# Purpose: Source data for LLM structured-output triage demonstration
+# Confounding presentations: deconditioning, seasonal allergies, mild
+#   asthma history, musculoskeletal back strain, work-related stress —
+#   all masking acute severe mitral regurgitation with chordae tendineae
+#   rupture progressing to flash pulmonary edema
+# Total intake transcripts: 16
+# 10 symptoms across 4 clusters:
+#   Cluster 1 – Acute valvular crisis: progressive dyspnea, pulmonary
+#     edema with pink frothy sputum, new holosystolic murmur
+#   Cluster 2 – Heart failure / volume overload: bilateral LE edema,
+#     orthopnea / paroxysmal nocturnal dyspnea, severe fatigue
+#   Cluster 3 – Hemodynamic instability: hypotension / near-syncope,
+#     tachycardia / palpitations
+#   Cluster 4 – Ischemic / systemic stress: chest pain / pressure,
+#     diaphoresis / cold sweats
+################################################################################
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-001] ===
+this is January 12th 2026, the patient is a fifty-seven year old male, he's a
+construction foreman, he came into the primary care clinic saying he's been
+feeling really worn out the past few weeks, he said he's been doing the same job
+for twenty years and never felt this tired before, he described it as a deep
+heaviness in his body like his muscles are dragging, he said going up a flight
+of stairs at a job site last week left him winded and he had to sit down on the
+landing for a couple minutes before he could keep going, he figured it was
+because he's been skipping the gym since November and he put on some weight over
+the holidays, he also mentioned a kind of general tightness across his chest when
+he pushes himself physically but it goes away when he stops, he said it's
+probably just being out of shape, he has a history of mild asthma as a teenager
+but hasn't used an inhaler in thirty years, he smokes half a pack a day and has
+for about twenty-five years, he drinks beer on weekends maybe four or five over a
+weekend, he said his mother had a heart murmur but she lived to be eighty-two so
+he figures it was nothing serious, his BP today was 128 over 78 which the nurse
+said was fine, heart rate 84, oxygen sat 97 percent, he looks healthy and is in
+good spirits, the doctor suggested some bloodwork and told him to try getting
+back into exercise gradually
+=== END INTAKE TRANSCRIPT [CONV-001] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-002] ===
+okay this is January 22nd, the patient came back because the office called about
+his labs, everything was pretty normal, cholesterol a little elevated and his
+fasting glucose was borderline but nothing dramatic, the doctor told him the labs
+didn't explain the tiredness, the patient said honestly it hasn't gotten better
+and if anything it's worse, he said he tried to go for a walk around the block
+with his wife last weekend and by the time they got halfway he was breathing hard
+and felt his heart thumping fast in his chest, he said it startled him because he
+wasn't even walking that fast, he described the heartbeat as kind of pounding and
+irregular for a few seconds like it was tripping over itself, he said it settled
+down after he stopped and rested but it took a few minutes, he also said he's
+been getting a mild achiness in his upper back between the shoulder blades at the
+end of the work day, he thinks it's from lifting materials at the site, the
+doctor said the fatigue could be from deconditioning and stress and possibly his
+smoking, she suggested he try cutting back on cigarettes and urged him again to
+start light exercise, she mentioned if it doesn't improve in a couple weeks to
+come back and they might do a cardiac workup just to be safe, BP 132 over 80,
+heart rate 88
+=== END INTAKE TRANSCRIPT [CONV-002] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-003] ===
+this is January 30th, the patient called the nurse line, he said last night
+something happened that bothered him, he was lying in bed and woke up around two
+in the morning feeling like he couldn't breathe, he said it was like somebody was
+sitting on his chest and he had to sit bolt upright and it took a minute or two
+before the feeling eased up, he said once he sat up and put his feet on the floor
+it gradually got better, his wife woke up and said he looked sweaty, he said he
+chalked it up to a bad dream or maybe his asthma acting up because the air has
+been dry this winter, he said it happened once before about a week ago but it
+wasn't as bad so he didn't mention it, the nurse asked about his daytime symptoms
+and he said the breathlessness with activity is about the same, still can't do
+as much as he used to, and he noticed yesterday that his work boots felt tighter
+than usual in the afternoon, he looked down and his ankles were a little puffy,
+he said he figured he'd been on his feet too long, the nurse recommended he come
+in for an appointment and he said he'd try to get in later this week
+=== END INTAKE TRANSCRIPT [CONV-003] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-004] ===
+February 3rd, the patient came in for the appointment, the nurse documented that
+he looks a little more tired than his last visit, his color is okay but there are
+circles under his eyes, he said the nighttime breathing thing has happened two
+more times since the phone call, he's started sleeping with an extra pillow which
+seems to help but he says it's uncomfortable, he said the ankle swelling is now
+happening every day not just sometimes, both ankles, and when he presses on them
+the dent stays for a while, he showed the nurse and she confirmed pitting edema
+bilaterally, he said his energy level at work has dropped a lot, he used to be
+able to walk the job site all day and now by early afternoon he's exhausted and
+has to sit in the trailer, his crew has noticed and been giving him a hard time
+about it which embarrasses him, the doctor listened to his chest and after a
+moment asked him to sit forward and breathe in, she listened again for what felt
+like a long time, she told him she could hear something with the stethoscope that
+she wanted to look into further, she didn't call it a murmur directly to him but
+the nurse noted in the chart that a new systolic murmur was auscultated, louder
+at the apex and radiating toward the axilla, the doctor ordered an echocardiogram
+and said she wanted it done soon, BP 126 over 74 which was actually lower than
+before, heart rate 92, oxygen sat 95 percent
+=== END INTAKE TRANSCRIPT [CONV-004] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-005] ===
+this is February 8th, the patient had the echocardiogram done at the hospital
+outpatient imaging center yesterday and today he came into the office to discuss
+results, I'm not documenting the results themselves but the patient's subjective
+report of his symptoms, he said since the last visit the shortness of breath has
+been getting worse, he said walking from the parking lot to the office today
+which he said is maybe two hundred feet left him breathing hard and his heart was
+racing, he also said he's had two more episodes of waking up at night gasping
+and now it happens even if he uses two pillows, he said last night he ended up
+sleeping in the recliner because it was the only way he could breathe, he
+mentioned that his chest feels heavy now not just with exertion but sometimes
+even when he's just sitting watching television, a dull pressure in the center
+of his chest that comes and goes, he said it's not a sharp pain so he doesn't
+think it's a heart attack, he said his wedding ring is tight and his ankles are
+swollen all day now, the doctor came in and from her expression he could tell the
+echo results were not great, she told him she was referring him urgently to a
+cardiologist and wanted him seen within the week, she said this was important and
+he shouldn't blow it off, he looked worried and said okay
+=== END INTAKE TRANSCRIPT [CONV-005] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-006] ===
+February 12th, cardiology intake, the patient came in with his wife who insisted
+on coming along, he told the cardiologist's nurse he's been feeling progressively
+worse, the shortness of breath is now constant with any activity and he's started
+getting winded just going from room to room in his house, he said he was climbing
+the stairs at home two days ago and halfway up he got so dizzy he had to grab the
+railing and sit down right there on the stairs, he said the room started spinning
+and everything went gray and he thought he was going to pass out, his wife was
+behind him and she said his face went white and she could see a vein pulsing in
+his neck, after about thirty seconds it passed and he made it upstairs but he was
+shaken, he said that was the first time he's felt truly dizzy like that, his wife
+said she's been noticing he sweats a lot more than he used to, at night his
+pillowcase is damp and sometimes during the day she sees beads of sweat on his
+forehead even when it's cool in the house, he said he hadn't really paid attention
+to the sweating but now that she mentions it he has been feeling clammy especially
+when the chest heaviness comes on, the cardiologist examined him and the nurse
+could see the doctor nodding to herself while listening to his heart, she spent
+a long time with the stethoscope, BP 118 over 70, heart rate 96, oxygen sat 94
+percent, the cardiologist said she wanted to see some additional imaging and
+possibly a cardiac catheterization
+=== END INTAKE TRANSCRIPT [CONV-006] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-007] ===
+this is February 17th, the patient called the cardiology nurse line in the
+morning, his wife actually made the call because he said he was too tired to talk
+on the phone, she said he's been getting worse every day, she said he barely got
+out of bed yesterday and when he did try to walk to the kitchen he was panting
+and had to lean on the counter, she said his ankles and legs are so swollen now
+that his socks leave deep marks and he can't get his shoes on at all, he hasn't
+been to work in four days, she said last night was the worst yet, he woke up
+around midnight coughing and gasping and couldn't catch his breath for several
+minutes even sitting up, she said he was soaked in sweat and his lips looked
+blue-ish in the light from the hallway, she said she almost called 911 but he
+begged her not to, she also said he's been complaining of a heaviness in his
+chest almost all the time now and sometimes there's a squeezing sensation that
+comes in waves, he says it makes him feel like something is very wrong inside his
+chest, she's very frightened and asking what they should do, the nurse told her
+to bring him in today or go to the ER
+=== END INTAKE TRANSCRIPT [CONV-007] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-008] ===
+February 17th, later that day, the patient came into the cardiology office with
+his wife, he had to be brought in in a wheelchair from the car because he said he
+could not walk the distance from the parking lot, he is visibly different from
+the February 12th visit, he's pale and breathing faster than normal, you can see
+his chest moving with each breath and his nostrils flaring slightly, the nurse
+noted that even sitting still in the wheelchair he's taking shallow rapid breaths,
+he said the squeezing chest feeling is about a six out of ten right now and it
+hasn't gone below a four in days, his ankles and lower legs are severely swollen
+with pitting edema up to mid-calf, his wife said he barely ate anything yesterday
+just some soup and crackers, she said he's been losing weight, his pants are loose
+around the waist but his legs look bigger from the swelling, the cardiologist
+listened to his heart and lungs and the nurse noted the doctor's face became very
+serious, she could hear crackles in his lungs the doctor said to the resident who
+was present, the cardiologist told the patient she was very concerned about his
+condition and recommended he be admitted to the hospital for further evaluation
+and monitoring, the patient resisted and said he just wants medication to fix it,
+the doctor said firmly that this needed more than medication at this point, BP 110
+over 64 which is low for him, heart rate 104, oxygen sat 91 percent on room air
+=== END INTAKE TRANSCRIPT [CONV-008] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-009] ===
+February 18th, the patient agreed to admission last evening after his wife and
+the cardiologist persuaded him, this is the morning nursing intake on the cardiac
+floor, he said he didn't sleep much because every time he started to drift off he
+would jolt awake feeling like he was drowning, he's been propped up almost fully
+upright in the bed with the head elevated, he said lying back even a little makes
+the breathing unbearable, he described waking up three times overnight short of
+breath with a feeling of fluid in his throat, the nurse noted he's been coughing
+up small amounts of frothy white sputum, he said his chest pressure is still
+there, he rates it about a five right now, constant, he said his heart feels like
+it's racing even though he's just lying in bed, the monitor showed a resting rate
+of 108, he looks exhausted and his skin is pale with a slightly grayish tinge,
+his lower extremities are very edematous, the nurse documented 3+ pitting edema
+bilaterally, he said he tried to get up to use the bathroom and nearly fainted,
+had to grab the bed rail, a nurse caught him and helped him back into bed, he was
+sweating heavily after that and said the room went dark for a second, he's been
+placed on continuous oxygen via nasal cannula at 4 liters, BP 106 over 60, oxygen
+sat 89 percent on room air before supplemental oxygen was applied, 93 percent on
+4L
+=== END INTAKE TRANSCRIPT [CONV-009] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-010] ===
+this is February 19th, still inpatient cardiac floor, afternoon nursing note, the
+patient had the cardiac catheterization this morning and is in recovery, he's
+awake and oriented, I'm documenting his subjective experience only, he said the
+procedure itself was okay because they gave him sedation but he could feel a weird
+pressure inside his chest during it, he said since waking up from the sedation
+his chest feels different, not necessarily worse but kind of raw and full, he said
+the breathing hasn't improved much, he still needs the head of the bed up all the
+way, he coughed a few times during this intake and the nurse noted the sputum is
+still frothy but now has a faint pink tinge, the patient noticed it too and asked
+if that was normal, the nurse reassured him and flagged it for the physician, he
+said his heart still feels like it's going too fast and he can feel it in his
+throat, the monitor confirms rate of 102, he said he feels dizzy when he turns
+his head quickly, he asked the nurse if the doctors found something bad and was
+told the cardiologist would come speak with him soon, his wife and adult son are
+in the waiting area, BP 108 over 58, oxygen sat 92 percent on 4L nasal cannula
+=== END INTAKE TRANSCRIPT [CONV-010] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-011] ===
+February 21st, inpatient day four, morning nursing intake, the patient was told
+the catheterization results yesterday and the nurse noted he seemed very quiet
+and withdrawn afterward, his wife said he barely spoke all evening, this morning
+he's more talkative but clearly frightened, he said the doctors explained that one
+of the parts inside his heart valve broke and the valve is leaking badly, he said
+he doesn't fully understand it but he understood the word severe and that scared
+him, he said his breathing is about the same as yesterday, he still can't lie flat
+at all, the head of the bed has been at sixty degrees continuously, he said his
+chest pain has changed, it's less of a constant pressure now but he gets sharp
+squeezing episodes every few hours that last five to ten minutes, during one of
+those episodes last night he said he was drenched in sweat and his heart was
+hammering and he felt like he was going to die, the nurse documented that the
+episode corresponded with a monitor alert showing heart rate spiking to 124 and
+oxygen dropping to 88 percent before recovering, his legs are still very swollen,
+the edema has not improved despite diuretics, he said everything below his knees
+feels tight and heavy, he asked the nurse this morning if he was going to need
+surgery and the nurse told him the medical team would discuss all options with him
+=== END INTAKE TRANSCRIPT [CONV-011] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-012] ===
+February 24th, inpatient day seven, the patient has been on intensive medical
+management, the cardiothoracic surgery team was consulted two days ago and has
+been following him, this is a midday nursing assessment, the patient looks worse
+today than any previous note, he's propped fully upright and leaning slightly
+forward which the nurse notes is a tripod position, his breathing is more labored
+than before, you can see his accessory neck muscles working with each breath, he
+said this morning was terrible, he woke up around four a.m. choking and coughing
+up frothy sputum that was clearly pink, he said it looked like watered-down blood
+and it terrified him, the nurse confirmed finding pink-tinged frothy sputum on
+his gown and pillow, he said his chest feels like it's being crushed from the
+inside, he rates the pressure at an eight out of ten, the worst it's been, his
+heart rate on the monitor has been running 110 to 118 all morning, he's been
+having waves of heavy sweating, the sheets were changed twice since midnight
+because they were soaked, his blood pressure has been running low, 100 over 54
+this morning, and his oxygen saturation has been hovering around 88 to 90 percent
+despite being on 6 liters of supplemental oxygen, the leg edema is unchanged, the
+nursing staff and the CT surgery resident have been in and out frequently, the
+patient's wife and son are at the bedside and his wife is crying
+=== END INTAKE TRANSCRIPT [CONV-012] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-013] ===
+this is February 25th, the cardiothoracic surgery consult intake note, the
+surgical attending and two residents are present, the patient is in significant
+respiratory distress, he is sitting bolt upright in bed gripping the bedrails,
+his breathing is rapid and shallow and he cannot complete a full sentence without
+stopping to breathe, the nurse notes that his lips and fingertips have a dusky
+bluish color, he said the chest crushing has not let up since yesterday, he rates
+it a nine, he said every breath feels like breathing through a wet cloth, he is
+sweating profusely, the gown across his shoulders and chest is damp, he said he
+is terrified and keeps asking his wife if he's going to be okay, his heart rate
+on the monitor is 120 and it's been intermittently irregular, the nursing notes
+document several runs of what appeared to be rapid irregular rhythm overnight,
+his blood pressure is 96 over 50, the lowest recorded during the admission, his
+oxygen saturation is 87 percent on 6 liters and the respiratory team has been
+called to escalate his oxygen support, his lower extremities remain severely
+edematous, the attending surgeon examined him and listened to his chest and spoke
+briefly with the cardiology team, the surgical team informed the patient and his
+family that they are strongly recommending emergency surgery to repair the valve,
+they explained that without surgical intervention his condition will continue to
+deteriorate and is life-threatening, the patient through tears said okay do what
+you need to do, his wife signed consent on his behalf because his hands were
+shaking too much to hold the pen
+=== END INTAKE TRANSCRIPT [CONV-013] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-014] ===
+February 26th, this is the pre-operative intake note, the patient has been
+transferred to the pre-op area, he's been stabilized somewhat overnight with
+aggressive diuretics and oxygen support, he's now on a non-rebreather mask, he
+said the breathing is a tiny bit less awful than yesterday but still very bad,
+he said the chest crushing is maybe a seven instead of a nine which he considers
+an improvement, his heart rate is 106 and more regular than the night before, BP
+104 over 62, oxygen sat 90 percent on the non-rebreather, his legs are still
+very swollen but the nurse said maybe slightly less tense than yesterday, his
+wife and son and now also his brother who drove in from out of state are in the
+family waiting area, the patient asked to see them before surgery and they came
+in, his brother said he looked terrible and started crying when he saw him, the
+patient told them he'd be fine and tried to smile, the pre-op nurse noted he
+appears medically fragile with poor reserve, thin and pale with cyanotic nail
+beds, he said he just wants this to be over and to breathe normally again, he
+closed his eyes and was quiet after that until the anesthesia team came in
+=== END INTAKE TRANSCRIPT [CONV-014] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-015] ===
+this is March 3rd 2026, the patient is now five days post-operative in the
+cardiac ICU step-down unit, he had the mitral valve repair surgery on February
+26th, this is a routine morning nursing intake, he is awake and alert and
+oriented, he recognized the nurse by name when she came in which she noted as a
+positive sign because the first two days post-op he had been confused and wasn't
+recognizing people, he said his chest is sore from the surgery, he described it
+as a surface burning along the incision line and a deep ache underneath but he
+said the crushing pressure that had been there for weeks is gone, he said that
+several times actually, that the pressure is gone and he sounds amazed by it, he
+can breathe more deeply than he could before surgery and he demonstrated by taking
+a slow deep breath and the nurse could see his ribcage expand fully, he said
+lying flat is still uncomfortable but the head of the bed is at thirty degrees
+now instead of sixty and he's tolerating it, his heart rate is 82 and regular,
+BP 116 over 72, oxygen sat 96 percent on 2 liters nasal cannula, his lower leg
+edema has significantly improved though there's still some residual puffiness
+around the ankles, he ate breakfast this morning, oatmeal and juice, and
+tolerated it well, his wife said this is the most he's eaten in weeks, his color
+is much better, pink instead of gray, he asked when he could go home and was told
+they needed to monitor him a while longer
+=== END INTAKE TRANSCRIPT [CONV-015] ===
+
+
+=== BEGIN INTAKE TRANSCRIPT [CONV-016] ===
+this is March 4th 2026, cardiac ICU step-down, afternoon nursing update, the
+patient continues to improve, he walked from his bed to the doorway of his room
+and back this morning with the physical therapist and a nurse, it's the first
+time he's been on his feet in over a week, he was slow and held onto the IV pole
+but he did it and he looked proud of himself, his wife clapped and he laughed and
+then winced because laughing pulled at the sternotomy, he said the surgical pain
+is manageable, maybe a three out of ten, and the deep ache is less than yesterday,
+he has not had any episodes of the crushing chest pressure, the shortness of
+breath, the heart racing, or the sweating since before the surgery, he commented
+that he didn't realize how bad he'd gotten until he started feeling better, his
+vitals have been stable all day, heart rate 78, BP 120 over 74, oxygen sat 97
+percent on room air, they weaned him off supplemental oxygen this morning, his
+ankle edema is nearly resolved, he's urinating well per the nursing notes, his
+appetite is improving, he ate lunch today and asked for a snack in the afternoon,
+he's asking about cardiac rehabilitation and when he can eventually go back to
+work, the medical team is discussing a discharge plan contingent on continued
+stable progress, his family is relieved and his brother who is still in town
+brought him a deck of cards and they played a hand in the afternoon before he
+fell asleep mid-game
+=== END INTAKE TRANSCRIPT [CONV-016] ===
+
+
+################################################################################
+# END OF FILE
+# 16 transcripts
+################################################################################
