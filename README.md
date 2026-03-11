@@ -3,7 +3,7 @@
 **Turning messy patient transcripts into validated, clinically actionable triage decisions using LLM structured outputs.**
 
 > Companion code for the presentation *Beyond the Chatbot — Building LLMs into Business Systems*
-> by Matt Hergott ([Mirabella AI](https://mirabellaai.com)) · Denver Data Dialogues · March 10, 2026
+> by Matt Hergott ([Mirabella AI](https://mirabella-ai.com)) · Denver Data Dialogues · March 10, 2026
 
 ---
 
